@@ -60,6 +60,21 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "File Exists",
+				"description": "A validation to check if the file exists",
+				"type": "Validation",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_population_raw_gz",
+						"type": "DatasetReference"
+					},
+					"timeout": "0.00:02:00",
+					"sleep": 10
+				}
 			}
 		],
 		"concurrency": 1,
