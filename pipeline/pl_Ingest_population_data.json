@@ -1,0 +1,142 @@
+{
+	"name": "pl_Ingest_population_data",
+	"properties": {
+		"activities": [
+			{
+				"name": "File Exists",
+				"description": "A validation to check if the file exists",
+				"type": "Validation",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_population_raw_gz",
+						"type": "DatasetReference"
+					},
+					"timeout": "0.00:02:00",
+					"sleep": 10
+				}
+			},
+			{
+				"name": "Get File Metadata",
+				"type": "GetMetadata",
+				"dependsOn": [
+					{
+						"activity": "File Exists",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.00:01:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "ds_population_raw_gz",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"columnCount",
+						"lastModified"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "If Condition",
+				"description": "If conditionn to run the copy activity once the meta data has appropriate values like column count  = 13",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Get File Metadata",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(activity('Get File Metadata').output.columnCount, 13)",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "Copy Population Data_copy1",
+							"description": "Copy Data component of Azure Data Factory used for copying data from source (blob) to sink (ADLS G2)",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.00:05:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_population_raw_gz",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_population_raw_tsv",
+									"type": "DatasetReference"
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"concurrency": 1,
+		"annotations": []
+	}
+}
