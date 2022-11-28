@@ -104,6 +104,36 @@
 					},
 					"firstRowOnly": false
 				}
+			},
+			{
+				"name": "Checking the config value iteratively",
+				"description": "Checking the config value iteratively",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "ECDC_Config_LookUp",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('ECDC_Config_LookUp').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Set variable for pipeline",
+							"description": "Setting pipeline Variables with the json dictionary items, sequentially",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": []
+						}
+					]
+				}
 			}
 		],
 		"parameters": {
