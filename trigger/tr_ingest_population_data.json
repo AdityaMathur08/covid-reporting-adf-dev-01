@@ -1,0 +1,26 @@
+{
+	"name": "tr_ingest_population_data",
+	"properties": {
+		"description": "Trigger to run the pipeline: 'pl_Ingest_population_data' and copy the compressed source file in Storage Blob(source) to the Azure Data Lake G2 (sink)",
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pl_Ingest_population_data",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/raw/blobs/population_by_age.tsv",
+			"blobPathEndsWith": ".gz",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/36d524b7-cf2f-410e-96f1-90bb4f8000b1/resourceGroups/covid-reporting-rg/providers/Microsoft.Storage/storageAccounts/adfcovidreportingsa",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
