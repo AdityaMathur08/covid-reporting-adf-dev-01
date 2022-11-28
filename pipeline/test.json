@@ -58,9 +58,9 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "SourceRelativeURL",
+								"variableName": "SinkFileName",
 								"value": {
-									"value": "@item().sourceRelativeURL",
+									"value": "@item().sinkFileName",
 									"type": "Expression"
 								}
 							}
