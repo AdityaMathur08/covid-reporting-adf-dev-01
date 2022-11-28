@@ -131,6 +131,39 @@
 									"type": "DatasetReference"
 								}
 							]
+						},
+						{
+							"name": "Delete Source File",
+							"description": "Deleting File from the Source Blob once the copy activity is sucessfully completed",
+							"type": "Delete",
+							"dependsOn": [
+								{
+									"activity": "Copy Population Data_copy1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.00:00:30",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "ds_population_raw_gz",
+									"type": "DatasetReference"
+								},
+								"enableLogging": false,
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": false,
+									"enablePartitionDiscovery": false
+								}
+							}
 						}
 					]
 				}
