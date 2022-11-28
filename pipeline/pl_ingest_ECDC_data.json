@@ -130,7 +130,14 @@
 							"description": "Setting pipeline Variables with the json dictionary items, sequentially",
 							"type": "SetVariable",
 							"dependsOn": [],
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "RelativeSourceURL",
+								"value": {
+									"value": "@item().sourceRelativeURL",
+									"type": "Expression"
+								}
+							}
 						}
 					]
 				}
@@ -142,6 +149,11 @@
 			},
 			"SinkFileName": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"RelativeSourceURL": {
+				"type": "String"
 			}
 		},
 		"annotations": []
