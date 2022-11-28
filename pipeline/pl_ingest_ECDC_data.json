@@ -7,7 +7,14 @@
 				"name": "Copy ECDC Data From Http to Data Lake",
 				"description": "Copy ECDC Data From Http to Data Lake",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Checking the config value iteratively",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -132,9 +139,9 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "RelativeSourceURL",
+								"variableName": "SinkFileName",
 								"value": {
-									"value": "@item().sourceRelativeURL",
+									"value": "@item().sinkFileName",
 									"type": "Expression"
 								}
 							}
@@ -153,6 +160,9 @@
 		},
 		"variables": {
 			"RelativeSourceURL": {
+				"type": "String"
+			},
+			"SinkFileName": {
 				"type": "String"
 			}
 		},
