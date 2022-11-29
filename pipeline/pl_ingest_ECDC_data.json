@@ -139,9 +139,9 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "RelativeSourceURL",
+								"variableName": "relativeURL",
 								"value": {
-									"value": "@item().sinkFileName",
+									"value": "@item().sourceRelativeURL",
 									"type": "Expression"
 								}
 							}
@@ -156,6 +156,11 @@
 			},
 			"SinkFileName": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"relativeURL": {
+				"type": "String"
 			}
 		},
 		"annotations": []
