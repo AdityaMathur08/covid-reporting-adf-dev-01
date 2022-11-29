@@ -4,14 +4,7 @@
 		"description": "Trigger to Ingest ECDC Data From pipeline 'pl_ingest_ECDC_data'\nUsing Config json referenced in ecdc_config",
 		"annotations": [],
 		"runtimeState": "Stopped",
-		"pipelines": [
-			{
-				"pipelineReference": {
-					"referenceName": "pl_ingest_ECDC_data",
-					"type": "PipelineReference"
-				}
-			}
-		],
+		"pipelines": [],
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {
